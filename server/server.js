@@ -30,6 +30,9 @@ app.post(
   async (req, res) => {
     try {
 
+      console.log("Received request to send emails...");
+      console.log("File received:", req.file ? req.file.originalname : "No file");
+
       const workbook = XLSX.readFile(
         req.file.path
       );
@@ -41,6 +44,8 @@ app.post(
         XLSX.utils.sheet_to_json(
           workbook.Sheets[sheetName]
         );
+      
+      console.log(`Found ${users.length} users in the excel sheet.`);
 
       const { subject, message } =
         req.body;
@@ -63,6 +68,7 @@ app.post(
         });
 
         sent++;
+        console.log(`Sent email to ${user.Email} (${sent}/${users.length})`);
       }
 
       fs.unlinkSync(req.file.path);
