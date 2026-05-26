@@ -26,7 +26,7 @@ export default function App() {
       setStatus("Sending emails...");
 
       const res = await axios.post(
-        "http://localhost:5000/api/send-emails",
+        `${import.meta.env.VITE_API_URL || "http://localhost:5000"}/api/send-emails`,
         formData
       );
 
